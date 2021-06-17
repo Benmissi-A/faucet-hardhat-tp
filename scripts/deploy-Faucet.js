@@ -1,5 +1,6 @@
 /* eslint-disable space-before-function-paren */
 /* eslint-disable no-undef */
+const { parseEther } = require('ethers/lib/utils');
 const { readFile } = require('fs/promises');
 const hre = require('hardhat');
 const { deployed } = require('./deployed');
@@ -45,7 +46,7 @@ async function main() {
 
   const Token = await hre.ethers.getContractFactory('Token');
   const token = await Token.attach(TOKEN_ADDRESS);
-  await token.connect(deployer).approve(faucet.address, token.totalSupply());
+  await token.connect(deployer).approve(faucet.address, ethers.utils.parseEther('8000'));
   console.log('approve totalSupply with account', deployer.address);
 }
 
