@@ -35,11 +35,10 @@ describe('Faucet', function () {
   describe('Functions', function () {
     describe('sendToken', function () {
       it('Should emit Bought', async function () {
-        await expect(faucet.connect(alice).sendToken())
-          .to.emit(faucet, 'Bought')
-
-          .withArgs(alice.address, 100);
+        await expect(faucet.connect(alice).sendToken()).to.emit(faucet, 'Bought').withArgs(alice.address, 100);
       });
+      it('Should revert timeLapse', async function () {});
+      it('Should revert no enough Token', async function () {});
     });
 
     describe('totalSupply', function () {

@@ -9,7 +9,7 @@ contract Faucet {
 
     Token private _token;
     string private _name;
-    uint256 private _tokenAmount = 100**18;
+    uint256 private _tokenAmount = 100000000000000000000 ;
     mapping (address => uint256) private _timeLapse;
 
     event Bought (address indexed sender, uint256 amount, uint256 timeLapse);
@@ -34,31 +34,31 @@ contract Faucet {
         emit Bought (msg.sender, _tokenAmount , _timeLapse[msg.sender]);
     }
 
-    function allowance () public view {
-        _token.allowance(_token.owner(), msg.sender);
+    function allowance () public view returns (uint256){
+      return  _token.allowance(_token.owner(), address(this));
     }
 
-    function balanceOf () public view {
-        _token.balanceOf(msg.sender);
+    function balanceOf () public view returns (uint256) {
+        return _token.balanceOf(msg.sender);
     }
 
-    function decimals () public view {
-        _token.decimals();
+    function decimals () public view returns (uint256){
+       return _token.decimals();
     }
     
-    function name () public view {
-        _token.name();
+    function name () public view returns (string memory){
+       return _token.name();
     }
     
-    function owner () public view {
-        _token.owner();
+    function owner () public view returns (address){
+      return  _token.owner();
     }
     
-    function symbol () public view {
-        _token.symbol();
+    function symbol () public view returns (string memory){
+      return  _token.symbol();
     }
 
-    function totalSupply () public view {
-        _token.totalSupply();
+    function totalSupply () public view returns (uint256){
+        return _token.totalSupply();
     }
 }
