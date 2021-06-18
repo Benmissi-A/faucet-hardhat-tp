@@ -2,6 +2,11 @@
 
 pragma solidity ^0.8.0;
 
+/// @title ERC20-based Token
+/// @author Stella, Guillaume, Amine, Sarah from Hardfork Alyra
+/// @notice You can use this contract to create an ERC20-based Token
+/// @dev You can customize this Token contract (name, symbol, amount of tokens) at deployment only
+
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
