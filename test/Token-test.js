@@ -20,7 +20,7 @@ describe('Token', function () {
   });
 
   describe('Deployement', function () {
-    it('Test deploy ownable event', async function () {
+    it('should emit the event OwnershipTransferred correctly', async function () {
       await expect(token.deployTransaction)
         .to.emit(token, 'OwnershipTransferred')
         .withArgs(ethers.constants.AddressZero, dev.address);
@@ -29,13 +29,13 @@ describe('Token', function () {
 
   describe('Functions', function () {
     describe('owner', function () {
-      it('Should return owner', async function () {
+      it('Should return the owner', async function () {
         expect(await token.owner()).to.equal(dev.address);
       });
     });
 
     describe('totalSupply', function () {
-      it('Should return totalSupply', async function () {
+      it('Should return the totalSupply', async function () {
         expect(await token.totalSupply()).to.equal(ethers.utils.parseEther('8000'));
       });
     });

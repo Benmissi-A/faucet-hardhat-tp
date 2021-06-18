@@ -35,10 +35,38 @@ describe('Faucet', function () {
   describe('Functions', function () {
     describe('sendToken', function () {
       it('Should emit Bought', async function () {
-        await expect(faucet.connect(alice).sendToken()).to.emit(faucet, 'Bought').withArgs(alice.address, 100);
+        const tx = await faucet.connect(alice).sendToken();
+        const receipt = await tx.wait();
+        const blockNumber = receipt.blockNumber;
+        const block = await ethers.provider.getBlock(blockNumber);
+        const timestamp = block.timestamp;
+        expect(tx)
+          .to.emit(faucet, 'Bought')
+          .withArgs(alice.address, ethers.utils.parseEther('100'), timestamp);
       });
-      it('Should revert timeLapse', async function () {});
-      it('Should revert no enough Token', async function () {});
+      it('Should emit Bought because timeLapse over 3 days', async function () {
+        await faucet.connect(alice).sendToken();
+        await ethers.provider.send('evm_increaseTime', [300000]);
+        await ethers.provider.send('evm_mine');
+        const tx = await faucet.connect(alice).sendToken();
+        const block = await ethers.provider.getBlock();
+        const timestamp = block.timestamp;
+        expect(tx)
+          .to.emit(faucet, 'Bought')
+          .withArgs(alice.address, ethers.utils.parseEther('100'), timestamp);
+      });
+      it('Should revert because timeLapse under 3 days', async function () {
+        await faucet.connect(alice).sendToken();
+        await ethers.provider.send('evm_increaseTime', [250000]);
+        await ethers.provider.send('evm_mine');
+        await expect(faucet.connect(alice).sendToken()).to.be.revertedWith('Faucet: await 3 days');
+      });
+      /*
+      it('Should revert if supply of Token too short', async function () {
+        //set allowance < 100 ??;
+        await expect(faucet.connect(bob).sendToken()).to.be.reverted();
+      });
+      */
     });
 
     describe('totalSupply', function () {
